@@ -37,6 +37,12 @@ class SearchViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
+    
+    private let scrollView: UIScrollView = {
+            let scrollView = UIScrollView()
+            scrollView.translatesAutoresizingMaskIntoConstraints = false
+            return scrollView
+        }()
 
     private let resultsStackView: UIStackView = {
         let stackView = UIStackView()
@@ -47,19 +53,43 @@ class SearchViewController: UIViewController {
     }()
 
     override func viewDidLoad() {
-        super.viewDidLoad()
+         super.viewDidLoad()
 
-        view.backgroundColor = .white
+         view.backgroundColor = .white
 
-        setupUI()
-    }
+         // Wrap the existing resultsStackView in a UIScrollView
+         view.addSubview(scrollView)
+         scrollView.addSubview(resultsStackView)
+
+         setupUI()
+     }
 
     private func setupUI() {
         view.addSubview(searchTextField)
         view.addSubview(excludeTextField)
         view.addSubview(searchButton)
-        view.addSubview(resultsStackView)
 
+        // Adjust constraints for the scrollView
+        NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: searchButton.bottomAnchor, constant: 16),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+        ])
+
+        // Add the resultsStackView to the scrollView
+        scrollView.addSubview(resultsStackView)
+
+        // Adjust constraints for resultsStackView within scrollView
+        NSLayoutConstraint.activate([
+            resultsStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            resultsStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            resultsStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            resultsStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            resultsStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+        ])
+
+        // Adjust constraints for other UI elements
         NSLayoutConstraint.activate([
             searchTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
             searchTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
@@ -71,11 +101,6 @@ class SearchViewController: UIViewController {
 
             searchButton.topAnchor.constraint(equalTo: excludeTextField.bottomAnchor, constant: 16),
             searchButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-
-            resultsStackView.topAnchor.constraint(equalTo: searchButton.bottomAnchor, constant: 16),
-            resultsStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            resultsStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            resultsStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
     }
 
@@ -152,7 +177,7 @@ class SearchResultView: UIView {
 
     private let recipeImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -200,15 +225,15 @@ class SearchResultView: UIView {
         NSLayoutConstraint.activate([
             recipeImageView.topAnchor.constraint(equalTo: topAnchor),
             recipeImageView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            recipeImageView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.3),
-            recipeImageView.heightAnchor.constraint(equalTo: heightAnchor),
+            recipeImageView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.4),
+            recipeImageView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 1.5),
 
-            titleLabel.topAnchor.constraint(equalTo: topAnchor),
-            titleLabel.leadingAnchor.constraint(equalTo: recipeImageView.trailingAnchor, constant: 8),
+            titleLabel.centerYAnchor.constraint(equalTo: recipeImageView.centerYAnchor), 
+            titleLabel.leadingAnchor.constraint(equalTo: recipeImageView.trailingAnchor, constant: 5),
             titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
-            titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
         ])
     }
+
 
     @objc private func recipeTapped() {
         if let recipe = recipe {
@@ -217,26 +242,3 @@ class SearchResultView: UIView {
     }
 }
 
-class RecipeDetailViewController: UIViewController {
-
-    private var recipe: Recipe?
-
-    init(recipe: Recipe) {
-        super.init(nibName: nil, bundle: nil)
-        self.recipe = recipe
-    }
-
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        view.backgroundColor = .white
-        title = recipe?.label
-
-        // Implement the UI to display detailed information about the recipe
-        // Similar to RandViewController
-    }
-}
