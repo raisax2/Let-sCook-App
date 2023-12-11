@@ -77,8 +77,8 @@ class SearchResult: UIView {
             titleLabel.leadingAnchor.constraint(equalTo: recipeImageView.trailingAnchor, constant: 5),
             titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
 
-            saveButton.topAnchor.constraint(equalTo: recipeImageView.topAnchor, constant: 5),
-            saveButton.trailingAnchor.constraint(equalTo: recipeImageView.trailingAnchor, constant: -5),
+            saveButton.topAnchor.constraint(equalTo: recipeImageView.topAnchor, constant: 20),
+            saveButton.trailingAnchor.constraint(equalTo: recipeImageView.trailingAnchor, constant: 0),
             saveButton.widthAnchor.constraint(equalToConstant: 30),
             saveButton.heightAnchor.constraint(equalToConstant: 30),
         ])
@@ -87,12 +87,20 @@ class SearchResult: UIView {
         
     }
     
+
     @objc private func saveButtonTapped() {
         if let recipe = recipe {
             delegate?.didSaveRecipe(recipe)
+            UIView.animate(withDuration: 0.3, animations: {
+                self.saveButton.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+            }) { _ in
+                UIView.animate(withDuration: 0.3) {
+                    self.saveButton.transform = .identity
+                    self.saveButton.tintColor = .green
+                }
+            }
         }
     }
-
 
     @objc private func recipeTapped() {
         if let recipe = recipe {

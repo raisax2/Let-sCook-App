@@ -23,9 +23,8 @@ class Homepage: UIViewController {
        // the three buttons in verticle stack lower half of the page
         let searchButton = createSquareButton(title: " Search with Ingredients ", action: #selector(searchButtonTapped))
         let savedRecipesButton = createSquareButton(title: " Saved Recipes ", action: #selector(savedRecipesButtonTapped))
-        let settingsButton = createSquareButton(title: " Settings ", action: #selector(settingsButtonTapped))
 
-        let buttonsStackView = UIStackView(arrangedSubviews: [searchButton, savedRecipesButton, settingsButton])
+        let buttonsStackView = UIStackView(arrangedSubviews: [searchButton, savedRecipesButton])
         buttonsStackView.axis = .vertical
         buttonsStackView.spacing = 16
         buttonsStackView.translatesAutoresizingMaskIntoConstraints = false
@@ -168,11 +167,6 @@ class Homepage: UIViewController {
     @objc private func savedRecipesButtonTapped() {
         let savedRecipesViewController = Saved()
         navigationController?.pushViewController(savedRecipesViewController, animated: true)
-    }
-
-    @objc private func settingsButtonTapped() {
-        let settingsViewController = SettingsViewController()
-        navigationController?.pushViewController(settingsViewController, animated: true)
     }
 }
 
