@@ -26,9 +26,13 @@ class RecipeDetail: UIViewController {
         view.backgroundColor = .white
         title = recipe?.label
 
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(scrollView)
+
         let containerView = UIView()
         containerView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(containerView)
+        scrollView.addSubview(containerView)
 
         let recipeImageView = UIImageView()
         recipeImageView.contentMode = .scaleAspectFill
@@ -56,8 +60,6 @@ class RecipeDetail: UIViewController {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(stackView)
 
-        stackView.addArrangedSubview(recipeImageView)
-
         let titleLabel = UILabel()
         titleLabel.text = recipe?.label
         titleLabel.font = UIFont.boldSystemFont(ofSize: 20)
@@ -79,17 +81,62 @@ class RecipeDetail: UIViewController {
         instructionsLabel.translatesAutoresizingMaskIntoConstraints = false
         stackView.addArrangedSubview(instructionsLabel)
 
+        // Additional Information Labels
+        if let healthLabels = recipe?.healthLabels, !healthLabels.isEmpty {
+            let healthLabelsLabel = UILabel()
+            healthLabelsLabel.text = "Health Labels: \(healthLabels.joined(separator: ", "))"
+            healthLabelsLabel.font = UIFont.systemFont(ofSize: 16)
+            healthLabelsLabel.numberOfLines = 0
+            healthLabelsLabel.translatesAutoresizingMaskIntoConstraints = false
+            stackView.addArrangedSubview(healthLabelsLabel)
+        }
+
+        if let mealType = recipe?.mealType, !mealType.isEmpty {
+            let mealTypeLabel = UILabel()
+            mealTypeLabel.text = "Meal Type: \(mealType.joined(separator: ", "))"
+            mealTypeLabel.font = UIFont.systemFont(ofSize: 16)
+            mealTypeLabel.numberOfLines = 0
+            mealTypeLabel.translatesAutoresizingMaskIntoConstraints = false
+            stackView.addArrangedSubview(mealTypeLabel)
+        }
+
+        if let cuisineType = recipe?.cuisineType, !cuisineType.isEmpty {
+            let cuisineTypeLabel = UILabel()
+            cuisineTypeLabel.text = "Cuisine Type: \(cuisineType.joined(separator: ", "))"
+            cuisineTypeLabel.font = UIFont.systemFont(ofSize: 16)
+            cuisineTypeLabel.numberOfLines = 0
+            cuisineTypeLabel.translatesAutoresizingMaskIntoConstraints = false
+            stackView.addArrangedSubview(cuisineTypeLabel)
+        }
+
+        if let calories = recipe?.calories {
+            let caloriesLabel = UILabel()
+            caloriesLabel.text = "Calories: \(calories)"
+            caloriesLabel.font = UIFont.systemFont(ofSize: 16)
+            caloriesLabel.numberOfLines = 0
+            caloriesLabel.translatesAutoresizingMaskIntoConstraints = false
+            stackView.addArrangedSubview(caloriesLabel)
+        }
+
         NSLayoutConstraint.activate([
-            containerView.topAnchor.constraint(equalTo: view.topAnchor, constant: 16),
-            containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            containerView.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor),
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
 
         NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: containerView.topAnchor),
-            stackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            containerView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            containerView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            containerView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            containerView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+        ])
+
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: recipeImageView.bottomAnchor, constant: 16),
+            stackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16),
+            stackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16),
             stackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
         ])
 

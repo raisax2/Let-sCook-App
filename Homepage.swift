@@ -3,7 +3,6 @@
 //  Let'sCook
 //
 //  Created by Raisa Methila on 11/20/23.
-//
 
 import Foundation
 import UIKit
@@ -17,10 +16,10 @@ class Homepage: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = .white
-        
+
         fetchRandomRecipe()
 
-       // the three buttons in verticle stack lower half of the page
+        // the three buttons in vertical stack lower half of the page
         let searchButton = createSquareButton(title: " Search with Ingredients ", action: #selector(searchButtonTapped))
         let savedRecipesButton = createSquareButton(title: " Saved Recipes ", action: #selector(savedRecipesButtonTapped))
 
@@ -35,26 +34,26 @@ class Homepage: UIViewController {
             buttonsStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: view.bounds.height * 0.25),
         ])
     }
-    
-    //fetch random recipe using edamam API
+
+    // fetch random recipe using edamam API
     private func fetchRandomRecipe() {
         guard let url = URL(string: "https://api.edamam.com/api/recipes/v2?type=public&q=random&app_id=\(edamamAppId)&app_key=\(edamamAppKey)") else {
             print("Invalid URL")
             return
         }
-        
+
         URLSession.shared.dataTask(with: url) { data, response, error in
             guard let data = data, error == nil else {
                 print("Error fetching data: \(error?.localizedDescription ?? "Unknown error")")
                 return
             }
-            
-            //decoding JSON data
+
+            // decoding JSON data
             do {
                 let decoder = JSONDecoder()
                 let result = try decoder.decode(EdamamResponse.self, from: data)
-                
-                //display random recipe on UI
+
+                // display random recipe on UI
                 if let randomRecipe = result.hits.randomElement()?.recipe {
                     DispatchQueue.main.async {
                         self.updateRecipeUI(recipe: randomRecipe)
@@ -66,15 +65,8 @@ class Homepage: UIViewController {
         }.resume()
     }
 
-    private var stackView: UIStackView!
-
     private func updateRecipeUI(recipe: Recipe) {
-       
-        let containerView = UIView()
-        containerView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(containerView)
 
-        // image view
         let recipeImageView = UIImageView()
         recipeImageView.contentMode = .scaleAspectFill
         recipeImageView.clipsToBounds = true
@@ -83,7 +75,7 @@ class Homepage: UIViewController {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(recipeImageTapped))
         recipeImageView.addGestureRecognizer(tapGesture)
         recipeImageView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.addSubview(recipeImageView)
+        view.addSubview(recipeImageView)
 
         if let imageUrl = URL(string: recipe.image) {
             URLSession.shared.dataTask(with: imageUrl) { data, _, error in
@@ -95,47 +87,25 @@ class Homepage: UIViewController {
             }.resume()
         }
 
-        //vertical stack view for recipe information
-        stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.spacing = 8
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.addSubview(stackView)
-        
-        stackView.addArrangedSubview(recipeImageView)
-    
         let titleLabel = UILabel()
         titleLabel.text = recipe.label
         titleLabel.font = UIFont.boldSystemFont(ofSize: 20)
-        titleLabel.numberOfLines = 0 // Allow multiline
+        titleLabel.numberOfLines = 0
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        stackView.addArrangedSubview(titleLabel)
+        view.addSubview(titleLabel)
 
-        // Set constraints for the container view, stack view, and recipe image view
+        // Set constraints for the title label and the recipe image view
         NSLayoutConstraint.activate([
-            containerView.topAnchor.constraint(equalTo: view.topAnchor, constant: 16),
-            containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            containerView.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor),
-        ])
+            titleLabel.topAnchor.constraint(equalTo: recipeImageView.bottomAnchor, constant: 8),
+            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
 
-
-        NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: containerView.topAnchor),
-            stackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-            stackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-        ])
-
-     
-        NSLayoutConstraint.activate([
-            recipeImageView.topAnchor.constraint(equalTo: containerView.topAnchor),
-            recipeImageView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            recipeImageView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            recipeImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 16),
+            recipeImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            recipeImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             recipeImageView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5),
         ])
     }
-
 
     @objc private func recipeImageTapped(sender: UITapGestureRecognizer) {
         guard let recipeImageView = sender.view as? UIImageView,
@@ -158,7 +128,7 @@ class Homepage: UIViewController {
         return button
     }
 
-  //navigating to respective controllers for bthe 3 buttons
+    // navigating to respective controllers for the 3 buttons
     @objc private func searchButtonTapped() {
         let searchViewController = SearchIngredients()
         navigationController?.pushViewController(searchViewController, animated: true)
@@ -184,6 +154,11 @@ struct Recipe: Codable {
     let instructions: String?
     let ingredientLines: [String]
 
+    // Additional properties
+    let healthLabels: [String]?
+    let mealType: [String]?
+    let cuisineType: [String]?
+    let calories: Double?
 }
 
 extension UIImageView {
@@ -203,5 +178,3 @@ extension UIImageView {
 private struct AssociatedKeys {
     static var recipe = "recipe"
 }
-
-

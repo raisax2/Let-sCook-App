@@ -1,10 +1,11 @@
-
 //
 //  Random.swift
 //  Let'sCook
 //
 //  Created by Raisa Methila on 11/20/23.
 //
+
+
 
 import Foundation
 import UIKit
@@ -28,12 +29,10 @@ class Random: UIViewController {
         view.backgroundColor = .white
         title = recipe?.label
 
-        
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(scrollView)
 
-        
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.spacing = 8
@@ -58,12 +57,48 @@ class Random: UIViewController {
         ingredientsLabel.numberOfLines = 0
         ingredientsLabel.translatesAutoresizingMaskIntoConstraints = false
 
-      
         stackView.addArrangedSubview(titleLabel)
         stackView.addArrangedSubview(ingredientsLabel)
         stackView.addArrangedSubview(instructionsLabel)
 
-        
+        // Additional Information Labels
+        if let healthLabels = recipe?.healthLabels, !healthLabels.isEmpty {
+            let healthLabelsLabel = UILabel()
+            healthLabelsLabel.text = "Health Labels: \(healthLabels.joined(separator: ", "))"
+            healthLabelsLabel.font = UIFont.systemFont(ofSize: 16)
+            healthLabelsLabel.numberOfLines = 0
+            healthLabelsLabel.translatesAutoresizingMaskIntoConstraints = false
+            stackView.addArrangedSubview(healthLabelsLabel)
+        }
+
+        if let mealType = recipe?.mealType, !mealType.isEmpty {
+            let mealTypeLabel = UILabel()
+            mealTypeLabel.text = "Meal Type: \(mealType.joined(separator: ", "))"
+            mealTypeLabel.font = UIFont.systemFont(ofSize: 16)
+            mealTypeLabel.numberOfLines = 0
+            mealTypeLabel.translatesAutoresizingMaskIntoConstraints = false
+            stackView.addArrangedSubview(mealTypeLabel)
+        }
+
+        if let cuisineType = recipe?.cuisineType, !cuisineType.isEmpty {
+            let cuisineTypeLabel = UILabel()
+            cuisineTypeLabel.text = "Cuisine Type: \(cuisineType.joined(separator: ", "))"
+            cuisineTypeLabel.font = UIFont.systemFont(ofSize: 16)
+            cuisineTypeLabel.numberOfLines = 0
+            cuisineTypeLabel.translatesAutoresizingMaskIntoConstraints = false
+            stackView.addArrangedSubview(cuisineTypeLabel)
+        }
+
+        if let calories = recipe?.calories {
+            let caloriesLabel = UILabel()
+            caloriesLabel.text = "Calories: \(calories)"
+            caloriesLabel.font = UIFont.systemFont(ofSize: 16)
+            caloriesLabel.numberOfLines = 0
+            caloriesLabel.translatesAutoresizingMaskIntoConstraints = false
+            stackView.addArrangedSubview(caloriesLabel)
+        }
+
+        // Set constraints for the stackView
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 16),
             stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
@@ -72,7 +107,7 @@ class Random: UIViewController {
             stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
         ])
 
-        
+        // Set constraints for the scrollView
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -80,7 +115,9 @@ class Random: UIViewController {
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
 
-        
-        titleLabel.setContentHuggingPriority(.required, for: .vertical)
+        // Set constraints for titleLabel
+        NSLayoutConstraint.activate([
+            titleLabel.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -32),
+        ])
     }
 }

@@ -110,8 +110,34 @@ class SearchIngredients: UIViewController {
         fetchRecipes(ingredients: ingredients, excludeIngredients: excludeIngredients)
     }
 
+//    private func fetchRecipes(ingredients: String, excludeIngredients: String) {
+//        let urlString = "https://api.edamam.com/api/recipes/v2?type=public&q=\(ingredients)&excluded=\(excludeIngredients)&app_id=975cbac4&app_key=4df40c8e0831be922abb597a5da68fe9"
+//        guard let url = URL(string: urlString) else {
+//            print("Invalid URL")
+//            return
+//        }
+//
+//        URLSession.shared.dataTask(with: url) { data, response, error in
+//            guard let data = data, error == nil else {
+//                print("Error fetching data: \(error?.localizedDescription ?? "Unknown error")")
+//                return
+//            }
+//
+//            do {
+//                let decoder = JSONDecoder()
+//                let result = try decoder.decode(EdamamResponse.self, from: data)
+//
+//                DispatchQueue.main.async {
+//                    self.updateSearchResultsUI(results: result.hits.map { $0.recipe })
+//                }
+//            } catch {
+//                print("Error decoding data: \(error.localizedDescription)")
+//            }
+//        }.resume()
+//    }
     private func fetchRecipes(ingredients: String, excludeIngredients: String) {
         let urlString = "https://api.edamam.com/api/recipes/v2?type=public&q=\(ingredients)&excluded=\(excludeIngredients)&app_id=975cbac4&app_key=4df40c8e0831be922abb597a5da68fe9"
+        
         guard let url = URL(string: urlString) else {
             print("Invalid URL")
             return
