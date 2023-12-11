@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let navigationController = UINavigationController()
         
-        let homepageViewController = HomepageViewController()
+        let homepageViewController = Homepage()
         
         navigationController.viewControllers = [homepageViewController]
         
