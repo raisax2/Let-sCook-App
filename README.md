@@ -1,6 +1,6 @@
 # Let'sCook App
 
-Welcome to **Let'sCook**, a simple and user-friendly iOS app that helps you explore recipes based on the ingredients you have. This app is the **first version** of a larger project that later evolved into **What's Cooking**.
+Welcome to **Let'sCook**, a simple and user-friendly iOS app that helps you explore recipes based on the ingredients you have. This app is the **first version** of a larger project that later evolved into **Whats_Cookin**.
 
 ---
 
@@ -18,7 +18,7 @@ Let'sCook was designed to allow users to input desired ingredients into a search
 - The app's database lacks actual recipe instructions. Clicking on a recipe provides ingredient lists but not step-by-step cooking directions.
 
 ### Future Development
-The app has evolved into **What's_Cookin**, a collaborative project that builds upon the foundation of Let'sCook. Check it out [here](https://github.com/JQuanMoodie/Whats_Cookin).
+The app has evolved into **Whats_Cookin**, a collaborative project that builds upon the foundation of Let'sCook. Check it out [here](https://github.com/JQuanMoodie/Whats_Cookin).
 
 ---
 
