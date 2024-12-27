@@ -18,7 +18,7 @@ Let'sCook was designed to allow users to input desired ingredients into a search
 - The app's database lacks actual recipe instructions. Clicking on a recipe provides ingredient lists but not step-by-step cooking directions.
 
 ### Future Development
-The app has evolved into **What's Cooking**, a collaborative project that builds upon the foundation of Let'sCook. Check it out [here](https://github.com/JQuanMoodie/Whats_Cookin).
+The app has evolved into **What's_Cookin**, a collaborative project that builds upon the foundation of Let'sCook. Check it out [here](https://github.com/JQuanMoodie/Whats_Cookin).
 
 ---
 
