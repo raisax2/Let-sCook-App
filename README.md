@@ -1,4 +1,4 @@
-# Let's_Cook App
+# Let'sCook App
 
 Welcome to **Let'sCook**, a simple and user-friendly iOS app that helps you explore recipes based on the ingredients you have. This app is the **first version** of a larger project that later evolved into **What's Cooking**.
 
